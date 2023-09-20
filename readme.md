@@ -5,8 +5,7 @@ Squad Vale
 <i>Project encouraged by the Associação Fundo Social Vale do Jequitinhonha - FSVJ
 </br>2022</i>
 
-### Settings
-
+### Settings for Windows
 #### Install these packages, case you don't already have it
 Download python 3 then:
 ```shell
@@ -28,7 +27,36 @@ pip install -r requirements.txt
 ```shell
 py app.py
 ```
+</br>
 
+### Settings for Linux
+
+#### Install these packages, case you don't already have it
+Verify if you have python 3 installed
+```shell
+python3 --version
+```
+If not, then install it
+```shell
+sudo apt-get update
+sudo apt-get install python3
+```
+#### Create the Virtual Environment
+```shell
+virtualenv venv
+```
+#### Activate it
+```shell
+source venv/bin/activate
+```
+#### Install the system requirements
+```shell
+pip install -r requirements.txt
+```
+#### Run the project
+```shell
+python3 app.py
+```
 </br>
 
 ## Visão Geral
@@ -77,3 +105,4 @@ O aplicativo FEIRA-KIT é um projeto social incentivado pelo Fundo Social Vale d
   - Especifica a versão do Python que deve ser usada para executar o Projeto
 
 ### IMPORTANTE: O arquivo ".env" na raiz do Projeto é o responsável por armazenar credenciais de acesso ao Banco de Dados. **Nunca deve ser compartilhado ou enviado para o Github**
+=======
