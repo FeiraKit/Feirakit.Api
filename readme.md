@@ -105,4 +105,4 @@ O aplicativo FEIRA-KIT é um projeto social incentivado pelo Fundo Social Vale d
   - Especifica a versão do Python que deve ser usada para executar o Projeto
 
 ### IMPORTANTE: O arquivo ".env" na raiz do Projeto é o responsável por armazenar credenciais de acesso ao Banco de Dados. **Nunca deve ser compartilhado ou enviado para o Github**
-=======
+
