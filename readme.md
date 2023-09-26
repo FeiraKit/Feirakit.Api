@@ -45,7 +45,7 @@ sudo apt-get install python3
 ```shell
 virtualenv venv
 ```
-#### Ative-o
+#### Ative o ambiente
 ```shell
 source venv/bin/activate
 ```
