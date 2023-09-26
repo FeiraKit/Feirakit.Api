@@ -7,7 +7,7 @@ Squad Vale
 
 ### Configurações para Windows
 #### Instale esses pacotes caso já não os tenha instalados
-Download python 3, então:
+Faça download do python3, então:
 ```shell
 pip install virtualenv
 ```
