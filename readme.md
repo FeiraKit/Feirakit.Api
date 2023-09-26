@@ -1,59 +1,59 @@
-### Developed by:
+### Desenvolvido por:
 Squad Vale
 </br>
 
-<i>Project encouraged by the Associação Fundo Social Vale do Jequitinhonha - FSVJ
+<i>Projeto incentivado pela Associação Fundo Social Vale do Jequitinhonha - FSVJ
 </br>2022</i>
 
-### Settings for Windows
-#### Install these packages, case you don't already have it
-Download python 3 then:
+### Configurações para Windows
+#### Instale esses pacotes caso já não os tenha instalados
+Download python 3, então:
 ```shell
 pip install virtualenv
 ```
-#### Create the Virtual Environment
+#### Crie o ambiente virtual
 ```shell
 virtualenv venv
 ```
-#### Activate it
+#### Ative o ambiente
 ```shell
 venv\Scripts\activate
 ```
-#### Install the system requirements
+#### Instale as dependências do projeto
 ```shell
 pip install -r requirements.txt
 ```
-#### Run the project
+#### Rode o projeto
 ```shell
 py app.py
 ```
 </br>
 
-### Settings for Linux
+### Configurações para Linux
 
-#### Install these packages, case you don't already have it
-Verify if you have python 3 installed
+#### Instale esses pacotes caso já não os tenha 
+Verifique se o python3 está instalado
 ```shell
 python3 --version
 ```
-If not, then install it
+Se não, então instale-o
 ```shell
 sudo apt-get update
 sudo apt-get install python3
 ```
-#### Create the Virtual Environment
+#### Crie o ambiente virtual
 ```shell
 virtualenv venv
 ```
-#### Activate it
+#### Ative-o
 ```shell
 source venv/bin/activate
 ```
-#### Install the system requirements
+#### Instale as dependências do projeto
 ```shell
 pip install -r requirements.txt
 ```
-#### Run the project
+#### Rode o projeto
 ```shell
 python3 app.py
 ```
