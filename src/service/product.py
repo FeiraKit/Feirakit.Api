@@ -71,6 +71,10 @@ class Product(IdSettings):
             {'produtor_id': id_usuario}))
         return self.entity_response_list(products)
 
+    def get_by_cities(self, cities):
+        products = list(database.main[self.collection].find({'cidades': cities}))
+        return self.entity_response_list(products)
+
     def get_product_types(self):
         return {
             'unidades': unidades,

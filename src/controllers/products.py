@@ -62,6 +62,14 @@ class ProductSeachByNameOfUsuario(Resource):
     def get(self, id_usuario):
         products = product_service.get_products_by_id_usuario(id_usuario)
         return products, 200
+        
+@api.route('/cities/<string:Cidades_disponiveis>')
+class GetProductByCities(Resource):
+    @api.marshal_with(product_model.response)
+    def get(self, Cidades_disponiveis):
+        cities = Cidades_disponiveis
+        product_types = product_service.get_by_cities(cities)
+        return product_types, 200
 
 @api.route('/units')
 class GetUnity(Resource):
