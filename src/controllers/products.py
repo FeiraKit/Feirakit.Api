@@ -69,3 +69,10 @@ class GetUnity(Resource):
     def get(self):
         product_types = product_service.get_product_types()
         return product_types, 200
+@api.route('/cities/<string:Cidades_disponiveis>')
+class GetProductByCities(Resource):
+    @api.marshal_with(product_model.response)
+    def get(self, Cidades_disponiveis):
+        cities = Cidades_disponiveis
+        product_types = product_service.get_by_cities(cities)
+        return product_types, 200
