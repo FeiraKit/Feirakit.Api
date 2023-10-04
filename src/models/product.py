@@ -1,13 +1,13 @@
 from flask_restx import fields
 from src.program.server import server
+from src.service.product import product_service
 from src.models.id import id
-from src.constants.products import unidades, categorias
 
 request = server.api.model('Product',  {
     'nome': fields.String(required=True, min_Length=1, max_Length=200, description='Nome do produto'),
-    'categoria': fields.String(required=True, enum=categorias, description='Tipo de produto'),
+    'categoria': fields.String(required=True, enum=product_service.get_product_types()[0]['categorias'], description='Tipo de produto'),
     'descricao': fields.String(required=True, min_Length=1, max_Length=200, description='Descrição do produto'),
-    'unidade': fields.String(required=True, enum=unidades, description='Unidade do produto'),
+    'unidade': fields.String(required=True, enum=product_service.get_product_types()[0]['unidades'], description='Unidade do produto'),
     'estoque': fields.Integer(required=True, description='Quantidade no estoque'),
     'produtor_id': fields.String(required=True, min_Length=1, max_Length=50, description='Nome produtor'),
     'bestbefore': fields.Boolean(required=True, description='Produto colhido após a compra'),
