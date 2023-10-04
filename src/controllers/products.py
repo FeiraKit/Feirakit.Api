@@ -48,28 +48,6 @@ class ProductSeachById(Resource):
     def get(self, id):
         products = product_service.get_one(id)
         return products, 200
-        
-@api.route('/byname/<string:name>')
-class ProductSeachByName(Resource):
-    @api.marshal_list_with(product_model.response)
-    def get(self, name):
-        products = product_service.get_products_by_name(name)
-        return products, 200
-
-@api.route('/by-id-usuario/<string:id_usuario>')
-class ProductSeachByNameOfUsuario(Resource):
-    @api.marshal_list_with(product_model.response)
-    def get(self, id_usuario):
-        products = product_service.get_products_by_id_usuario(id_usuario)
-        return products, 200
-        
-@api.route('/cities/<string:Cidades_disponiveis>')
-class GetProductByCities(Resource):
-    @api.marshal_with(product_model.response)
-    def get(self, Cidades_disponiveis):
-        cities = Cidades_disponiveis
-        product_types = product_service.get_by_cities(cities)
-        return product_types, 200
 
 @api.route('/units')
 class GetUnity(Resource):
@@ -77,3 +55,14 @@ class GetUnity(Resource):
     def get(self):
         product_types = product_service.get_product_types()
         return product_types, 200
+        
+@api.route('/filters')
+class GetProductsByfilters(Resource):
+    @api.marshal_with(product_model.response)
+    @api.doc(params={'Nome':'nome do produto','id':"id do usuário", 'Cidade':"Cidade que o produto possa ser entregue"})
+    def get(self):
+        Nome= request.args.get('Nome', type=str, default="nenhum")
+        id= request.args.get('id', type=str, default="nenhum")
+        cidade= request.args.get('Cidade', type=str, default="nenhuma")
+        products = product_service.get_by_filter(Nome, id, cidade)
+        return products, 200
