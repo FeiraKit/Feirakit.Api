@@ -19,13 +19,20 @@ class Product(IdSettings):
                 'resultado': False,
                 'mensagem': "erro ao cadastrar produto, os dados de usuário são inconsitentes"
             }, 401
-
+        
+        exists_category = database.main['configs'].find_one({'Categories': product['categoria']})
+        if not exists_category:
+            return {
+                'resultado': False,
+                'mensagem': "erro ao cadastrar produto, categoria inválida"
+            }, 401
+            
         database.main[self.collection].insert_one(product)
         return {
             'resultado': True,
             'mensagem': "Produto criado com sucesso"
         }, 201
-
+    
     def put(self, product, current_user):
         if product['produtor_id'] != current_user['id']:
             return {
