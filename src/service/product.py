@@ -1,7 +1,7 @@
 from bson import ObjectId
 from src.program.database import database
 from src.service.id_settings import IdSettings
-from src.constants.products import categorias, unidades
+from src.service.configs import configs_service
 
 class Product(IdSettings):
     def __init__(self):
@@ -19,13 +19,20 @@ class Product(IdSettings):
                 'resultado': False,
                 'mensagem': "erro ao cadastrar produto, os dados de usuário são inconsitentes"
             }, 401
-
+        
+        exists_category = database.main['configs'].find_one({'Categories': product['categoria']})
+        if not exists_category:
+            return {
+                'resultado': False,
+                'mensagem': "erro ao cadastrar produto, categoria inválida"
+            }, 401
+            
         database.main[self.collection].insert_one(product)
         return {
             'resultado': True,
             'mensagem': "Produto criado com sucesso"
         }, 201
-
+    
     def put(self, product, current_user):
         if product['produtor_id'] != current_user['id']:
             return {
@@ -72,9 +79,7 @@ class Product(IdSettings):
         return self.entity_response_list(products)
 
     def get_product_types(self):
-        return {
-            'unidades': unidades,
-            'categorias': categorias
-        }
+        product_types = configs_service.get()
+        return product_types
 
 product_service = Product()
