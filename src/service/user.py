@@ -2,8 +2,8 @@ from bson import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 from jwt import encode
 from src.service.id_settings import IdSettings
-from src.program.database import database
-from src.core.var_env import var_env
+from src.config.database import database
+from src.config.var_env import var_env
 
 
 class User(IdSettings):

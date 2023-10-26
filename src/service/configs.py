@@ -1,5 +1,4 @@
-from bson import ObjectId
-from src.program.database import database
+from src.config.database import database
 from src.service.id_settings import IdSettings
 
 class Configs(IdSettings):

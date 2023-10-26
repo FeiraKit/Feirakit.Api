@@ -1,6 +1,6 @@
 from flask_restx import fields
-from src.program.server import server
-from src.models.id import id
+from src.config.server import server
+from src.controllers.models.id import id
 
 request = server.api.model('Product',  {
     'nome': fields.String(required=True, min_Length=1, max_Length=200, description='Nome do produto'),
@@ -8,7 +8,8 @@ request = server.api.model('Product',  {
     'descricao': fields.String(required=True, min_Length=1, max_Length=200, description='Descrição do produto'),
     'unidade': fields.String(required=True, description='Unidade do produto'),
     'estoque': fields.Integer(required=True, description='Quantidade no estoque'),
-    'produtor_id': fields.String(required=True, min_Length=1, max_Length=50, description='Nome produtor'),
+    'produtor_id': fields.String(required=True, min_Length=1, max_Length=50, description='id produtor'),
+    'cidades': fields.String(required=True, drscription='cidades que o produto vai estar disponivel'),
     'bestbefore': fields.Boolean(required=True, description='Produto colhido após a compra'),
     'validade': fields.Date(required=True, description='Validade do produto'),
     'imagem_url': fields.List(fields.String),

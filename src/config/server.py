@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restx import Api
-from src.core.var_env import var_env
+from src.config.var_env import var_env
 class Server():
     def __init__(self):
         self.app = Flask(__name__)

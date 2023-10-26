@@ -1,6 +1,6 @@
 from flask_restx import fields
-from src.program.server import server
-from src.models.id import id
+from src.config.server import server
+from src.controllers.models.id import id
 
 address = server.api.model('Address', {
     'rua': fields.String(required=True, min_Length=3, max_Length=200, description='Rua'),

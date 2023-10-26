@@ -1,7 +1,7 @@
 from flask import request
 from functools import wraps
 from jwt import decode
-from src.core.var_env import var_env
+from src.config.var_env import var_env
 from src.service.user import user_service
 
 class Authenticate():

@@ -1,10 +1,10 @@
 from flask_restx import Resource
 from flask import request
-from src.program.server import server
-from src.models import product as product_model
-from src.models.id import id_request
+from src.config.server import server
+from src.controllers.models import product as product_model
+from src.controllers.models.id import id_request
 from src.service.product import product_service
-from src.core.authenticate import authenticate
+from src.config.authenticate import authenticate
 
 app, api = server.app, server.api.namespace('products',description='Recurso de produtos')
 @api.route('')
