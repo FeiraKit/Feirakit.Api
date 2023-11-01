@@ -59,10 +59,10 @@ class GetUnity(Resource):
 @api.route('/filters')
 class GetProductsByfilters(Resource):
     @api.marshal_with(product_model.response)
-    @api.doc(params={'Nome':'nome do produto','id':"id do usuário", 'Cidade':"Cidade que o produto possa ser entregue"})
+    @api.doc(params={'nome':'nome do produto','id':"id do usuário", 'cidade':"cidade que o produto possa ser entregue"})
     def get(self):
-        Nome= request.args.get('Nome', type=str, default="nenhum")
-        id= request.args.get('id', type=str, default="nenhum")
-        cidade= request.args.get('Cidade', type=str, default="nenhuma")
-        products = product_service.get_by_filter(Nome, id, cidade)
+        nome= request.args.get('nome', type=str)
+        id= request.args.get('id', type=str)
+        cidade= request.args.get('cidade', type=str)
+        products = product_service.get_by_filter(nome, id, cidade)
         return products, 200
