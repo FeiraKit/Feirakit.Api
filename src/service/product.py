@@ -62,8 +62,14 @@ class Product(IdSettings):
         return self.entity_response(product)
 
     def get_by_filter(self, name, user_id, cities):
-        
-        products = database.main[self.collection].find({'nome': {'$regex': name, '$options' : 'i'}, 'produtor_id': user_id, 'cidades': cities})
+        filterDto = []
+        if(name):
+            filterDto.append({"nome": {'$regex': name, '$options' : 'i'}})
+        if(user_id):
+            filterDto.append({"produtor_id": user_id})
+        if(cities):
+            filterDto.append({"cidades":  cities})
+        products = database.main[self.collection].find({'$or': filterDto})
         print(products)
         return self.entity_response_list(products)
 
