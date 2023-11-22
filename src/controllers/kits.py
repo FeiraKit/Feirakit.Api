@@ -23,7 +23,7 @@ class Kit(Resource):
     @api.marshal_with(kit_model.response_default)
     @api.doc(security='Bearer')
     def post(self,current_user):
-        response = kit_model.post(api.payload,current_user)
+        response = kit_service.post(api.payload,current_user)
         return response
     
     @api.expect(kit_model.update_request)
