@@ -62,22 +62,10 @@ class Product(IdSettings):
         return self.entity_response(product)
 
     def get_by_filter(self, name, user_id, cities):
-        empty_list = []
-        search = ['nome', 'produtor_id', 'cidades']
-        filters = [name, user_id, cities]
-        vez = 0
-        for filter in filters:
-            if filters != None:
-                products = list(database.main[self.collection].find({search[vez]: filters[vez]}))
-                print(filters[vez])
-                print(search[vez])
-                if products != empty_list:
-                   return self.entity_response_list(products)
-                    
-            vez = vez + 1
-
-        if filters != None:
-            products = list(database.main[self.collection].find())
+        
+        products = database.main[self.collection].find({'nome': {'$regex': name, '$options' : 'i'}, 'produtor_id': user_id, 'cidades': cities})
+        print(products)
+        return self.entity_response_list(products)
 
     def get_product_types(self):
         return {
