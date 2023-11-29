@@ -72,7 +72,7 @@ class Product(IdSettings):
                 products.append(list(database.main[self.collection].find({search[vez]: filters[vez]})))
                 print(vez)
             vez = vez + 1
-            return products
+        return products
             
 
     def get_product_types(self):
