@@ -17,9 +17,23 @@ class Kit(IdSettings):
         if kit['produtor_id'] != current_user['id']:
             return {
                 'resultado': False,
-                'mensagem': "erro ao cadastrar kit, os dados de usuário são inconsitentes"
+                'mensagem': "erro ao cadastrar kit, os dados de usuário são inconsistentes"
             }, 401
-            
+        for info_produto in kit['info_produtos']:
+            try:
+                produto_origin = database.main['product'].find_one({'_id': ObjectId(info_produto['produto']['id'])})
+            except:
+                nome_do_produto = info_produto['produto']['nome']
+                return {
+                    'resultado': False,
+                    'mensagem': f'erro ao cadastrar kit, o produto {nome_do_produto} não existe'
+                } 
+            if info_produto['quantidade'] > produto_origin['estoque']:
+                nome_do_produto = info_produto['produto']['nome']
+                return {
+                    'resultado': False,
+                    'mensagem': f'erro ao cadastrar kit, não há estoque suficiente de {nome_do_produto}'
+                }  
         database.main[self.collection].insert_one(kit)
         return {
             'resultado': True,
