@@ -15,6 +15,8 @@ request = server.api.model('Product',  {
     'preco': fields.Float(description='valor do produto'),
 })
 
+request_product_kit = server.api.inherit('ProductRequestForKit', request, id)
+
 response = server.api.inherit('ProductResponse', request, id)
 
 update_request = server.api.inherit('ProductUpdateRequest',  request, id)
