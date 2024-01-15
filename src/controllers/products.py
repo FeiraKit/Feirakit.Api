@@ -48,23 +48,20 @@ class ProductSeachById(Resource):
     def get(self, id):
         products = product_service.get_one(id)
         return products, 200
-        
-@api.route('/byname/<string:name>')
-class ProductSeachByName(Resource):
-    @api.marshal_list_with(product_model.response)
-    def get(self, name):
-        products = product_service.get_products_by_name(name)
-        return products, 200
-
-@api.route('/by-id-usuario/<string:id_usuario>')
-class ProductSeachByNameOfUsuario(Resource):
-    @api.marshal_list_with(product_model.response)
-    def get(self, id_usuario):
-        products = product_service.get_products_by_id_usuario(id_usuario)
-        return products, 200
 
 @api.route('/units')
 class GetUnity(Resource):
     def get(self):
         product_types = product_service.get_product_types()
-        return product_types
+        return product_types, 200
+        
+@api.route('/filters')
+class GetProductsByfilters(Resource):
+    @api.marshal_with(product_model.response)
+    @api.doc(params={'nome':'nome do produto','id':"id do usuário", 'cidade':"cidade que o produto possa ser entregue"})
+    def get(self):
+        nome= request.args.get('nome', type=str)
+        id= request.args.get('id', type=str)
+        cidade= request.args.get('cidade', type=str)
+        products = product_service.get_by_filter(nome, id, cidade)
+        return products, 200

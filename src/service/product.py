@@ -68,15 +68,22 @@ class Product(IdSettings):
         product = database.main[self.collection].find_one({'_id':  ObjectId(id)})
         return self.entity_response(product)
 
-    def get_products_by_name(self, name):
-        products = list(database.main[self.collection].find(
-            {'nome': {'$regex': name, '$options' : 'i'}}))
-        return self.entity_response_list(products)
-
-    def get_products_by_id_usuario(self, id_usuario):
-        products = list(database.main[self.collection].find(
-            {'produtor_id': id_usuario}))
-        return self.entity_response_list(products)
+    def get_by_filter(self, name, user_id, cities):
+        filters = [
+        {'name': 'nome', 'value': name, 'regex': True}, 
+        {'name': 'produtor_id', 'value': user_id, 'regex': False}, 
+        {'name': 'cidades', 'value': cities, 'regex': False}
+        ]
+        products = []
+        for filter in filters:
+            if filter['value'] != None:
+                products.append(list(database.main[self.collection].find(self.search_object(filter))))
+        return products
+            
+    def search_object(self, filter):
+        if filter['regex']:
+            return{filter['name']: {'$regex': filter['value'], '$options' : 'i'}}
+        return{filter['name']: filter['value']}
 
     def get_product_types(self):
         product_types = configs_service.get()
