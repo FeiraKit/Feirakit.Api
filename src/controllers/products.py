@@ -51,7 +51,6 @@ class ProductSeachById(Resource):
 
 @api.route('/units')
 class GetUnity(Resource):
-    @api.marshal_with(product_model.types_response)
     def get(self):
         product_types = product_service.get_product_types()
         return product_types, 200
