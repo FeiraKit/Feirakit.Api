@@ -88,5 +88,25 @@ class Product(IdSettings):
     def get_product_types(self):
         product_types = configs_service.get()
         return product_types
+    
+    def get_cities(self):
+        users = list(database.main['user'].find({}, {"endereco.cidade": 1, "_id": 0}))
+        
+        cities = []
+
+        for user in users:
+                cities.append(user["endereco"]["cidade"])
+        
+        cities = list(set(cities))
+
+        resultado = []
+
+        for city in cities:
+                resultado.append({
+                    "nome": city
+                })
+
+        return {"resultado": resultado,
+                    "mensagem": "Sucesso"}, 200
 
 product_service = Product()

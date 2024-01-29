@@ -36,3 +36,11 @@ types_response = server.api.model('Units', {
     'categorias': fields.List(fields.String)
 })
 
+cities = server.api.model('Cities', {
+    'nome': fields.String()
+})
+
+cities_response = server.api.model('CitiesResponse',  {
+    'resultado': fields.Nested(cities),
+    'mensagem': fields.String()
+})

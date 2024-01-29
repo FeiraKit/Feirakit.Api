@@ -65,3 +65,12 @@ class GetProductsByfilters(Resource):
         cidade= request.args.get('cidade', type=str)
         products = product_service.get_by_filter(nome, id, cidade)
         return products, 200
+
+@api.route('/get_cities')
+class GetCities(Resource):
+    @authenticate.jwt_required
+    @api.doc(security='Bearer')
+    @api.marshal_with(product_model.cities_response)
+    def get(self, current_user):
+        cities = product_service.get_cities()
+        return cities
