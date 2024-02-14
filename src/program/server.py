@@ -22,7 +22,7 @@ class Server():
 
     def run(self):
         self.app.run(
-            host='0.0.0.0', port=var_env.port,
+            host='0.0.0.0',
             debug=True
         )
 
