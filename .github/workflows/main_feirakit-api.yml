@@ -9,6 +9,13 @@ on:
     branches:
       - main
   workflow_dispatch:
+env:
+  APPSENHA: ${{ vars.APPSENHA }}
+  DATABASE: ${{ vars.DATABASE }}
+  DB_CONNECTION: ${{ vars.DB_CONNECTION }}
+  EMAIL: ${{ vars.EMAIL }}
+  PORT: ${{ vars.PORT }}
+  SECRET_KEY: ${{ vars.SECRET_KEY }}
 
 jobs:
   build:
@@ -33,18 +40,12 @@ jobs:
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: Use variables
         run: |
-          echo "SECRET_KEY variable : $SECRET_KEY"
+          echo "APPSENHA variable : $APPSENHA"
           echo "DATABASE variable : $DATABASE"
           echo "DB_CONNECTION variable : $DB_CONNECTION"
+          echo "EMAIL variable : $EMAIL"
           echo "PORT variable environment : $PORT"
-          echo "PORT variable environment : ${{ vars.SECRET_KEY }}"
-        env:
-          SECRET_KEY: ${{ vars.SECRET_KEY }}
-          DATABASE: ${{ vars.DATABASE }}
-          DB_CONNECTION: ${{ vars.DB_CONNECTION }}
-          APPSENHA: ${{ vars.APPSENHA }}
-          EMAIL: ${{ vars.EMAIL }}
-          PORT: $PORT
+          echo "SECRET_KEY variable environment : $SECRET_KEY"
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
