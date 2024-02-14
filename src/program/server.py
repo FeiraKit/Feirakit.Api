@@ -19,7 +19,6 @@ class Server():
                              }
                        }
                        )
-        self.api.init_app(self.app)
 
     def run(self):
         self.app.run()
