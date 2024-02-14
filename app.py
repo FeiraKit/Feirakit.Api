@@ -3,5 +3,5 @@ from src.controllers.users import User
 from src.controllers.kits import Kit
 from src.program.server import server
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     server.run()
