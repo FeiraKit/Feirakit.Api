@@ -31,13 +31,20 @@ jobs:
         run: pip install -r requirements.txt
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-
-      - name: Set up environment variables
+      - name: Use variables
         run: |
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
-          echo "DATABASE=${{ secrets.DATABASE }}" >> $GITHUB_ENV
-          echo "DB_CONNECTION=${{ secrets.DB_CONNECTION }}" >> $GITHUB_ENV
-          echo "PORT=${{ secrets.PORT }}" >> $GITHUB_ENV
+          echo "SECRET_KEY variable : $SECRET_KEY"
+          echo "DATABASE variable : $DATABASE"
+          echo "DB_CONNECTION variable : $DB_CONNECTION"
+          echo "PORT variable environment : $PORT"
+          echo "PORT variable environment : ${{ vars.SECRET_KEY }}"
+        env:
+          SECRET_KEY: ${{ vars.SECRET_KEY }}
+          DATABASE: ${{ vars.DATABASE }}
+          DB_CONNECTION: ${{ vars.DB_CONNECTION }}
+          APPSENHA: ${{ vars.APPSENHA }}
+          EMAIL: ${{ vars.EMAIL }}
+          PORT: $PORT
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
