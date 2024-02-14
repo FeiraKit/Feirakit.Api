@@ -13,12 +13,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: production
-    env:
-      DATABASE: "${{vars.DATABASE}}"
-      SECRET_KEY: "${{vars.SECRET_KEY}}"
-      DB_CONNECTION: "${{vars.DB_CONNECTION}}"
-      PORT: "${{vars.PORT}}"
 
     steps:
       - uses: actions/checkout@v4
