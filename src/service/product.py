@@ -72,13 +72,13 @@ class Product(IdSettings):
         filters = [
         {'name': 'nome', 'value': name, 'regex': True}, 
         {'name': 'produtor_id', 'value': user_id, 'regex': False}, 
-        {'name': 'cidades', 'value': cities, 'regex': False}
+        {'name': 'cidades', 'value': cities, 'regex': True}
         ]
         products = []
         for filter in filters:
             if filter['value'] != None:
                 products.append(list(database.main[self.collection].find(self.search_object(filter))))
-        return products
+        return self.entity_response_list(*products)
             
     def search_object(self, filter):
         if filter['regex']:
