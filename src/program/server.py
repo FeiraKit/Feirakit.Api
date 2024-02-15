@@ -20,8 +20,8 @@ class Server():
                        }
                        )
 
-    def run(self):
-        self.app.run()
+    def app_flask(self):
+        return self.app
 
 
 server = Server()

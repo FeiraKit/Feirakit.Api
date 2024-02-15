@@ -3,5 +3,7 @@ from src.controllers.users import User
 from src.controllers.kits import Kit
 from src.program.server import server
 
+app = server.app_flask()
+
 if __name__ == "__main__":
-    server.run()
+    app.run()
