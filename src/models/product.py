@@ -9,7 +9,7 @@ request = server.api.model('Product',  {
     'unidade': fields.String(required=True, description='Unidade do produto'),
     'estoque': fields.Integer(required=True, description='Quantidade no estoque'),
     'produtor_id': fields.String(required=True, min_Length=1, max_Length=50, description='id produtor'),
-    'cidades': fields.String(required=True, description='cidades que o produto vai estar disponivel'),
+    'cidades': fields.List(fields.String,required=True, description='cidades que o produto vai estar disponivel'),
     'bestbefore': fields.Boolean(required=True, description='Produto colhido após a compra'),
     'validade': fields.Date(required=True, description='Validade do produto'),
     'imagem_url': fields.List(fields.String),
