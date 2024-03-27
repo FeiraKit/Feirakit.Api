@@ -1,6 +1,7 @@
 from src.controllers.products import Product
 from src.controllers.users import User
 from src.controllers.kits import Kit
+from src.controllers.rates import Rate
 from src.program.server import server
 
 app = server.app_flask()
