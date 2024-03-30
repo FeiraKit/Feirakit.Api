@@ -28,3 +28,11 @@ rate_update_response = server.api.inherit('RateUpdateResponse',  {
     'resultado': fields.Nested(request),
     'mensagem': fields.String()
 })
+
+rate_average_request = server.api.inherit('RateAverageRequest',  {
+    'productid': fields.String(),
+})
+
+rate_average_response = server.api.inherit('RateAverageResponse',  {
+    'average': fields.Float(),
+})

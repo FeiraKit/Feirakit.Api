@@ -35,6 +35,19 @@ class Rating(IdSettings):
             'resultado': True,
             'mensagem': "avaliação apagada com sucesso"
         }, 200
+    def average(self, productid):
+        rate = database.main[self.collection].find({'idproduct':  productid})
+        nota = 0
+        avaliacoes = 0
+        for i in rate:
+            avaliacoes += 1
+            nota += i['nota'] 
+        
+        media = nota / avaliacoes
+        return {
+            'average': media,
+        }, 200
+
 
 
 rating_service = Rating()

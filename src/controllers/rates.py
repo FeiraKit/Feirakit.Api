@@ -32,6 +32,11 @@ class Rate(Resource):
     def delete(self):
         response = rating_service.delete(api.payload['id'])
         return response
-
-
+    
+@api.route('/<string:id>')
+class RateGetaverage(Resource):
+    @api.marshal_with(rate.rate_average_response)
+    def get(self, id):
+        response = rating_service.average(id)
+        return response
     
