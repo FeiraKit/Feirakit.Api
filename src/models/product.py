@@ -24,7 +24,8 @@ update_request = server.api.inherit('ProductUpdateRequest',  request, id)
 
 update_response = server.api.inherit('ProductUpdateResponse',  {
     'resultado': fields.Nested(server.api.inherit('ProductResponse', request, id)),
-    'mensagem': fields.String()})
+    'mensagem': fields.String()
+})
 
 response_default = server.api.model('ProductResponseDefault',  {
     'resultado': fields.Boolean(),
