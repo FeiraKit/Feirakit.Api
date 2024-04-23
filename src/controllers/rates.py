@@ -11,16 +11,18 @@ app, api = server.app, server.api.namespace('Rates',description='Recurso de aval
 @api.route('')
 class Rate(Resource):
     @api.marshal_list_with(rate.rate_response)
+    @api.doc(params={'id':"id do produto"})
     def get(self):
-        rates = rating_service.get()
-        return rates, 200
-
+        id= request.args.get('id', type=str)
+        response = rating_service.get(id)
+        return response
+    
     @api.expect(rate.request)
     @api.marshal_with(rate.rate_default_response)
     def post(self):
         response = rating_service.post(api.payload)
         return response
-
+    
     @api.expect(rate.rate_update_request)
     @api.marshal_with(rate.rate_update_response)
     def put(self):
@@ -34,9 +36,17 @@ class Rate(Resource):
         return response
     
 @api.route('/<string:id>')
+class GetRates(Resource):
+    @api.marshal_with(rate.rate_response)
+    def get(self, id):
+        response = rating_service.getbyid(id)
+        return response
+    
+@api.route('average/<string:id>')
 class RateGetaverage(Resource):
     @api.marshal_with(rate.rate_average_response)
     def get(self, id):
         response = rating_service.average(id)
         return response
+
     

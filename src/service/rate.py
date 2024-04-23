@@ -7,11 +7,16 @@ class Rating(IdSettings):
     def __init__(self):
         self.collection = 'rating'
 
-    def get(self):
-        rates = database.main[self.collection].find()
-        return self.entity_response_list(rates)
+    def get(self, id):
+        rates = database.main[self.collection].find({'idproduct': id})
+        return self.entity_response_list(rates), 200
 
-    def post(self, rating):           
+    def post(self, rating):     
+        if(rating['nota'] <= 0 or rating['nota'] >= 6):
+            return {
+            'resultado': False,
+            'mensagem': "a nota de ser dada com numeros de 1 a 5"
+            }, 200
         database.main[self.collection].insert_one(rating)
         return {
             'resultado': True,
@@ -35,8 +40,14 @@ class Rating(IdSettings):
             'resultado': True,
             'mensagem': "avaliação apagada com sucesso"
         }, 200
+    
+    def getbyid(self, id):
+        rates = database.main[self.collection].find({'_id':  ObjectId(id)})
+        return self.entity_response_list(rates)
+    
+
     def average(self, productid):
-        rate = database.main[self.collection].find({'idproduct':  productid})
+        rate = database.main[self.collection].find({'idproduct': productid})
         nota = 0
         avaliacoes = 0
         for i in rate:
