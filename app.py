@@ -1,4 +1,4 @@
-from core import var_env
+from src.core.var_env import var_env
 from src.controllers.products import Product
 from src.controllers.users import User
 from src.controllers.kits import Kit
