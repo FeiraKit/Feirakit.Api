@@ -69,4 +69,5 @@ response_login_default = server.api.model('responseLoginDefault',  {
     'resultado': fields.Boolean(),
     'token': fields.String(),
     'mensagem': fields.String(),
+    'usuario': fields.Nested(server.api.inherit('userLoginResponse', base_user, id))
 })

@@ -93,22 +93,25 @@ class User(IdSettings):
         if not user:
             return {'resultado': False,
                     'token': 'null',
-                    'mensagem': 'Email não cadastrado'}, 404
+                    'mensagem': 'Email não cadastrado',
+                    'usuario': 'null',
+                    }, 404
 
         if not check_password_hash(user['senha'], password):
             return {'resultado': False,
                     'token': 'null',
-                    'mensagem': 'Senha inválida'}, 401
+                    'mensagem': 'Senha inválida','usuario': 'null',}, 401
         payload = {
             "id": str(user['_id']),
             "nome": user['nome']
         }
-
+        
         token = encode(payload, var_env.secret_key)
 
         return {'resultado': True,
                 'token': token,
-                'mensagem': 'Senha verificada'}, 201
+                'mensagem': 'Senha verificada',
+                'usuario':self.entity_response(user),}, 201
 
     def change_password(self, email, old_password, new_password, current_user):
         valid_old_password = self.verify_password(email, old_password)
