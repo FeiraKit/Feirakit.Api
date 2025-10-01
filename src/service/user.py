@@ -23,9 +23,22 @@ class User(IdSettings):
             return {'resultado': False,
                     'mensagem': 'Erro ao criar usuário. Já existe um usuário com esse email'}, 209
         user['senha'] = generate_password_hash(user['senha'])
-        database.main[self.collection].insert_one(user)
+        result = database.main[self.collection].insert_one(user)
+        user['_id'] = result.inserted_id
+
+        # monta payload do token
+        payload = {
+          "id": str(user['_id']),
+          "nome": user['nome']
+        }
+
+        token = encode(payload, var_env.secret_key)
+
         return {'resultado': True,
-                'mensagem': 'Usuário criado com sucesso'}, 201
+                'mensagem': 'Usuário criado com sucesso',
+                'token': token,
+                'usuario': self.entity_response(user)
+                }, 201
 
     def put(self, user, current_user):
         old_user = database.main[self.collection].find_one(

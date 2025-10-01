@@ -40,6 +40,8 @@ updated_response = server.api.model('UserResponse',  {
 create_response = server.api.model('UserCreateResponse',  {
     'resultado': fields.Boolean(),
     'mensagem': fields.String(),
+    'token': fields.String(),
+    "usuario": fields.Nested(server.api.inherit('userCreateResponse',  base_user, id))
 })
 
 update_request = server.api.inherit('userUpdateRequest',  server.api.model('userUpdateRequestProps',  {
