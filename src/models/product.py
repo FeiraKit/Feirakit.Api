@@ -2,6 +2,24 @@ from flask_restx import fields
 from src.program.server import server
 from src.models.id import id
 
+address_model = server.api.model('Address', {
+    'rua': fields.String(),
+    'numero': fields.String(),
+    'bairro': fields.String(),
+    'cep': fields.String(),
+    'complemento': fields.String(),
+    'cidade': fields.String(),
+    'estado': fields.String(),
+})
+
+
+seller_model = server.api.model('Seller', {
+    'name': fields.String(),
+    'email': fields.String(),
+    'telefone': fields.String(),
+    'endereco': fields.Nested(address_model)
+})
+
 request = server.api.model('Product',  {
     'nome': fields.String(required=True, min_Length=1, max_Length=200, description='Nome do produto'),
     'categoria': fields.String(required=True, description='Tipo de produto'),
@@ -20,6 +38,10 @@ request_product_kit = server.api.inherit('ProductRequestForKit', request, id)
 
 response = server.api.inherit('ProductResponse', request, id)
 
+responseProductById = server.api.inherit('ProductResponse', request, {
+    **id,
+    'seller': fields.Nested(seller_model)
+})
 update_request = server.api.inherit('ProductUpdateRequest',  request, id)
 
 update_response = server.api.inherit('ProductUpdateResponse',  {

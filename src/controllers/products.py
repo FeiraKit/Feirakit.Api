@@ -44,7 +44,7 @@ class Product(Resource):
 
 @api.route('/<string:id>')
 class ProductSeachById(Resource):
-    @api.marshal_list_with(product_model.response)
+    @api.marshal_list_with(product_model.responseProductById)
     def get(self, id):
         products = product_service.get_one(id)
         return products, 200

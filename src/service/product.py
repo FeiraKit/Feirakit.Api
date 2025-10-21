@@ -66,6 +66,21 @@ class Product(IdSettings):
 
     def get_one(self, id):
         product = database.main[self.collection].find_one({'_id':  ObjectId(id)})
+        seller_id = product.get('produtor_id')
+        if seller_id:
+            try:
+                seller = database.main['user'].find_one({'_id':  ObjectId(seller_id)})
+            except Exception as e:
+                print(f"[Aviso] Não foi possível buscar o vendedor ({seller_id}): {e}")
+
+            if seller:
+                # Anexa o vendedor ao produto
+                product['seller'] = {
+                    'name': seller.get('nome'),
+                    'email': seller.get('email'),
+                    'endereco': seller.get('endereco'),
+                    'telefone': seller.get('telefone')
+                }
         return self.entity_response(product)
 
     def get_by_filter(self, name, user_id, cities):
