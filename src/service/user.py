@@ -45,11 +45,15 @@ class User(IdSettings):
             {'_id':  ObjectId(user['id'])})
 
         if not old_user:
-            return {'resultado': {},
+            return {'resultado': False,
+                    'token': None,
+                    'usuario':{},
                     'mensagem': 'Erro ao atualizar usuário. Usuário não encontrado'}, 404
 
         if str(old_user['_id']) != current_user['id']:
-            return {'resultado': {},
+            return {'resultado': False,
+                    'token': None,
+                    'usuario':{},
                     'mensagem': 'Erro ao atualizar usuário. Você não tem permissão para alterar este usuário'}, 403
 
         updated_user = old_user
@@ -59,7 +63,17 @@ class User(IdSettings):
         my_query = {'_id':  ObjectId(user['id'])}
         new_values = {'$set': updated_user}
         database.main[self.collection].update_one(my_query, new_values)
-        return {'resultado': self.entity_response(updated_user),
+        
+        payload = {
+          "id": user['id'],
+          "nome": user['nome']
+        }
+        
+        token = encode(payload, var_env.secret_key)
+
+        return {'resultado':True,
+                'token': token,
+                'usuario': self.entity_response(updated_user),
                 'mensagem': 'Usuário alterado com sucesso'}, 201
 
     def delete(self, id, current_user):
