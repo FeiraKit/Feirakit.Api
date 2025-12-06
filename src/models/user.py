@@ -33,8 +33,11 @@ response = server.api.model('UserResponse',  {
 })
 
 updated_response = server.api.model('UserResponse',  {
-    'resultado': fields.Nested(server.api.inherit('userResponse',  base_user, id)),
+    'resultado': fields.Boolean(),
     'mensagem': fields.String(),
+    'token': fields.String(),
+    'usuario': fields.Nested(server.api.inherit('userResponse',  base_user, id)),
+    
 })
 
 create_response = server.api.model('UserCreateResponse',  {
