@@ -68,9 +68,8 @@ class GetProductsByfilters(Resource):
 
 @api.route('/get_cities')
 class GetCities(Resource):
-    @authenticate.jwt_required
-    @api.doc(security='Bearer')
+    
     @api.marshal_with(product_model.cities_response)
-    def get(self, current_user):
+    def get(self):
         cities = product_service.get_cities()
         return cities
