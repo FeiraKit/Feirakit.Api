@@ -172,6 +172,15 @@ class User(IdSettings):
                     'mensagem': 'Você não tem permissão para acessar este dado'}, 401
         return {'resultado': self.entity_response(user),
                 'mensagem': 'Usuários retornados com sucesso'}, 201
+    
+    def check_user_exists(self, email):
+        user = database.main[self.collection].find_one({"email": email})
+        if not user:
+            return {'userExist': None,
+                    }, 201
+        
+        return {'userExist': True,
+                'mensagem': 'Usuários retornados com sucesso'}, 201
 
     def get_user_by_id(self, id):
         user = self.entity_response(

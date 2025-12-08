@@ -59,6 +59,14 @@ check_password_request = server.api.model('checkPasswordRequest',  {
     'senha': fields.String(required=True, min_Length=4, max_Length=200, description='Senha a ser verificada'),
 })
 
+check_email_request = server.api.model('checkPasswordRequest',  {
+    'email': fields.String(required=True, min_Length=5, max_Length=200, description='Email'),
+})
+
+check_email_response = server.api.model('checkPasswordRequest',  {
+    'userExist': fields.Boolean(),
+})
+
 change_password_request = server.api.model('changePasswordRequest',  {
     'email': fields.String(required=True, min_Length=5, max_Length=200, description='Email'),
     'senha': fields.String(required=True, min_Length=4, max_Length=200, description='Senha antiga'),

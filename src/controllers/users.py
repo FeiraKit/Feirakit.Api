@@ -60,6 +60,15 @@ class UserSeachByEmail(Resource):
         email= request.args.get('email',type=str)
         users = user_service.get_users_by_email(email,current_user)
         return users
+    
+@api.route('/checkemailexists/')
+class UserCheckEmail(Resource):
+    @api.doc(params={'email': 'Email of user'})
+    @api.marshal_with(user_model.check_email_response)
+    def get(self):
+        email= request.args.get('email',type=str)
+        users = user_service.check_user_exists(email)
+        return users
 
 
 @api.route('/byname/')
