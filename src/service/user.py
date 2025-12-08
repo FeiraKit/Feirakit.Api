@@ -176,7 +176,7 @@ class User(IdSettings):
     def check_user_exists(self, email):
         user = database.main[self.collection].find_one({"email": email})
         if not user:
-            return {'userExist': None,
+            return {'userExist': False,
                     }, 201
         
         return {'userExist': True,
