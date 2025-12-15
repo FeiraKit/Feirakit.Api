@@ -9,9 +9,40 @@ class Product(IdSettings):
 
     def get(self, page, limit, sort):
         skip = limit * (page - 1)
-        products = list(database.main[self.collection].find().skip(
-            skip).limit(limit).sort('_id', sort))
-        return self.entity_response_list(products)
+        pipeline = [
+        {
+            "$addFields": {
+                "produtor_id_obj": { "$toObjectId": "$produtor_id" }
+            }
+        },
+        {
+            "$lookup": {
+                "from": "user",
+                "let": { "id": "$produtor_id_obj" },
+                "pipeline": [
+                    { "$match": { "$expr": { "$eq": ["$_id", "$$id"] } } },
+                    { "$project": { "_id": 1 } }
+                ],
+                "as": "produtor"
+            }
+        },
+        {
+            "$match": { "produtor": { "$ne": [] } }
+        },
+        {
+            "$project": {
+                "produtor_id_obj": 0,
+                "produtor": 0
+            }
+        },
+        { "$sort": { "_id": sort } },
+        { "$skip": skip },
+        { "$limit": int(limit) }
+    ]
+
+        productOrphanLess = list(database.main[self.collection].aggregate(pipeline))
+        
+        return self.entity_response_list(productOrphanLess)
 
     def post(self, product, current_user):
         if product['produtor_id'] != current_user['id']:
@@ -66,19 +97,37 @@ class Product(IdSettings):
 
     def get_one(self, id):
         product = database.main[self.collection].find_one({'_id':  ObjectId(id)})
+        seller_id = product.get('produtor_id')
+        if seller_id:
+            try:
+                seller = database.main['user'].find_one({'_id':  ObjectId(seller_id)})
+            except Exception as e:
+                print(f"[Aviso] Não foi possível buscar o vendedor ({seller_id}): {e}")
+
+            if seller:
+                # Anexa o vendedor ao produto
+                product['seller'] = {
+                    'name': seller.get('nome'),
+                    'email': seller.get('email'),
+                    'endereco': seller.get('endereco'),
+                    'telefone': seller.get('telefone')
+                }
         return self.entity_response(product)
 
     def get_by_filter(self, name, user_id, cities):
-        filters = [
-        {'name': 'nome', 'value': name, 'regex': True}, 
-        {'name': 'produtor_id', 'value': user_id, 'regex': False}, 
-        {'name': 'cidades', 'value': cities, 'regex': True}
-        ]
-        products = []
-        for filter in filters:
-            if filter['value'] != None:
-                products.append(list(database.main[self.collection].find(self.search_object(filter))))
-        return self.entity_response_list(*products)
+        query_filters = []
+        if name:
+            query_filters.append({"nome": {"$regex": name, "$options": "i"}})
+        if user_id:
+            query_filters.append({"produtor_id": user_id})
+        if cities:
+            query_filters.append({"cidades": {"$regex": cities, "$options": "i"}})
+        if not query_filters:
+            return self.entity_response_list([])
+        
+        mongo_query = {"$and": query_filters}
+        products_raw = list(database.main[self.collection].find(mongo_query))
+        return self.entity_response_list(products_raw)
             
     def search_object(self, filter):
         if filter['regex']:

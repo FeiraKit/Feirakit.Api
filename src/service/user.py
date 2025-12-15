@@ -23,20 +23,37 @@ class User(IdSettings):
             return {'resultado': False,
                     'mensagem': 'Erro ao criar usuário. Já existe um usuário com esse email'}, 209
         user['senha'] = generate_password_hash(user['senha'])
-        database.main[self.collection].insert_one(user)
+        result = database.main[self.collection].insert_one(user)
+        user['_id'] = result.inserted_id
+
+        # monta payload do token
+        payload = {
+          "id": str(user['_id']),
+          "nome": user['nome']
+        }
+
+        token = encode(payload, var_env.secret_key)
+
         return {'resultado': True,
-                'mensagem': 'Usuário criado com sucesso'}, 201
+                'mensagem': 'Usuário criado com sucesso',
+                'token': token,
+                'usuario': self.entity_response(user)
+                }, 201
 
     def put(self, user, current_user):
         old_user = database.main[self.collection].find_one(
             {'_id':  ObjectId(user['id'])})
 
         if not old_user:
-            return {'resultado': {},
+            return {'resultado': False,
+                    'token': None,
+                    'usuario':{},
                     'mensagem': 'Erro ao atualizar usuário. Usuário não encontrado'}, 404
 
         if str(old_user['_id']) != current_user['id']:
-            return {'resultado': {},
+            return {'resultado': False,
+                    'token': None,
+                    'usuario':{},
                     'mensagem': 'Erro ao atualizar usuário. Você não tem permissão para alterar este usuário'}, 403
 
         updated_user = old_user
@@ -46,7 +63,17 @@ class User(IdSettings):
         my_query = {'_id':  ObjectId(user['id'])}
         new_values = {'$set': updated_user}
         database.main[self.collection].update_one(my_query, new_values)
-        return {'resultado': self.entity_response(updated_user),
+        
+        payload = {
+          "id": user['id'],
+          "nome": user['nome']
+        }
+        
+        token = encode(payload, var_env.secret_key)
+
+        return {'resultado':True,
+                'token': token,
+                'usuario': self.entity_response(updated_user),
                 'mensagem': 'Usuário alterado com sucesso'}, 201
 
     def delete(self, id, current_user):
@@ -93,22 +120,25 @@ class User(IdSettings):
         if not user:
             return {'resultado': False,
                     'token': 'null',
-                    'mensagem': 'Email não cadastrado'}, 404
+                    'mensagem': 'Email não cadastrado',
+                    'usuario': 'null',
+                    }, 404
 
         if not check_password_hash(user['senha'], password):
             return {'resultado': False,
                     'token': 'null',
-                    'mensagem': 'Senha inválida'}, 401
+                    'mensagem': 'Senha inválida','usuario': 'null',}, 401
         payload = {
             "id": str(user['_id']),
             "nome": user['nome']
         }
-
+        
         token = encode(payload, var_env.secret_key)
 
         return {'resultado': True,
                 'token': token,
-                'mensagem': 'Senha verificada'}, 201
+                'mensagem': 'Senha verificada',
+                'usuario':self.entity_response(user),}, 201
 
     def change_password(self, email, old_password, new_password, current_user):
         valid_old_password = self.verify_password(email, old_password)
@@ -141,6 +171,15 @@ class User(IdSettings):
             return {'resultado': False,
                     'mensagem': 'Você não tem permissão para acessar este dado'}, 401
         return {'resultado': self.entity_response(user),
+                'mensagem': 'Usuários retornados com sucesso'}, 201
+    
+    def check_user_exists(self, email):
+        user = database.main[self.collection].find_one({"email": email})
+        if not user:
+            return {'userExist': False,
+                    }, 201
+        
+        return {'userExist': True,
                 'mensagem': 'Usuários retornados com sucesso'}, 201
 
     def get_user_by_id(self, id):

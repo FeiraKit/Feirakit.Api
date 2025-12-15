@@ -33,13 +33,18 @@ response = server.api.model('UserResponse',  {
 })
 
 updated_response = server.api.model('UserResponse',  {
-    'resultado': fields.Nested(server.api.inherit('userResponse',  base_user, id)),
+    'resultado': fields.Boolean(),
     'mensagem': fields.String(),
+    'token': fields.String(),
+    'usuario': fields.Nested(server.api.inherit('userResponse',  base_user, id)),
+    
 })
 
 create_response = server.api.model('UserCreateResponse',  {
     'resultado': fields.Boolean(),
     'mensagem': fields.String(),
+    'token': fields.String(),
+    "usuario": fields.Nested(server.api.inherit('userCreateResponse',  base_user, id))
 })
 
 update_request = server.api.inherit('userUpdateRequest',  server.api.model('userUpdateRequestProps',  {
@@ -52,6 +57,14 @@ update_request = server.api.inherit('userUpdateRequest',  server.api.model('user
 check_password_request = server.api.model('checkPasswordRequest',  {
     'email': fields.String(required=True, min_Length=5, max_Length=200, description='Email'),
     'senha': fields.String(required=True, min_Length=4, max_Length=200, description='Senha a ser verificada'),
+})
+
+check_email_request = server.api.model('checkPasswordRequest',  {
+    'email': fields.String(required=True, min_Length=5, max_Length=200, description='Email'),
+})
+
+check_email_response = server.api.model('checkPasswordRequest',  {
+    'userExist': fields.Boolean(),
 })
 
 change_password_request = server.api.model('changePasswordRequest',  {
@@ -69,4 +82,5 @@ response_login_default = server.api.model('responseLoginDefault',  {
     'resultado': fields.Boolean(),
     'token': fields.String(),
     'mensagem': fields.String(),
+    'usuario': fields.Nested(server.api.inherit('userLoginResponse', base_user, id))
 })
